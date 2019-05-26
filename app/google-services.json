@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "163889723959",
-    "firebase_url": "https://smart-market-493f5.firebaseio.com",
-    "project_id": "smart-market",
-    "storage_bucket": "smart-market.appspot.com"
+    "project_number": "713185086981",
+    "firebase_url": "https://yazlabadds.firebaseio.com",
+    "project_id": "yazlabadds",
+    "storage_bucket": "yazlabadds.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:163889723959:android:8dfec6ea9960ef32",
+        "mobilesdk_app_id": "1:713185086981:android:8dfec6ea9960ef32",
         "android_client_info": {
           "package_name": "com.yazlab.smartmarket"
         }
       },
       "oauth_client": [
         {
-          "client_id": "163889723959-up1tumt7qo8s7dd9bov0np8k719piapj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.yazlab.smartmarket",
-            "certificate_hash": "ebe2b27c7b26f42a273fb4a5d9118c179bc78c0f"
-          }
-        },
-        {
-          "client_id": "163889723959-ss0n2jfi4dg76smpiup94i7c7irdthpu.apps.googleusercontent.com",
+          "client_id": "713185086981-p8v3o497umupnv79fi3ilsf7jerrkjp8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDkrARqrg0vx0_c4LmpL46rO03WaFy6yeY"
+          "current_key": "AIzaSyCaVMMKvcRqpy5WbLSPxhQqdigYaYyxabY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "163889723959-ss0n2jfi4dg76smpiup94i7c7irdthpu.apps.googleusercontent.com",
+              "client_id": "713185086981-p8v3o497umupnv79fi3ilsf7jerrkjp8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
