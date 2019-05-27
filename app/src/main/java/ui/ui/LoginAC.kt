@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.yazlab.smartmarket
+package ui.ui
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -9,15 +9,16 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import com.google.firebase.auth.FirebaseAuth
+import com.yazlab.smartmarket.R
+import com.yazlab.smartmarket.Utils
 import kotlinx.android.synthetic.main.activity_login.*
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginAC : AppCompatActivity() {
 
 
     private var mAuth: FirebaseAuth? = null
     private lateinit var progressDialog: ProgressDialog
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,15 +41,15 @@ class LoginActivity : AppCompatActivity() {
                 ?.addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         val user = mAuth?.currentUser
-                        UserModel.uid = user?.uid.toString()
-                        UserModel.email = user?.email.toString()
-                        UserModel.user = user
+                        User.uid = user?.uid.toString()
+                        User.email = user?.email.toString()
+                        User.user = user
                         progressDialog.dismiss()
-                        startActivity(Intent(this, HomeActivity::class.java))
+                        startActivity(Intent(this, HomeActvity::class.java))
                         finish()
                     } else {
                         progressDialog.dismiss()
-                        Utils.showAlertDialog(this,"Kayıt İşlemi başarısız.") {
+                        Utils.showAlertDialog(this, "Kayıt İşlemi başarısız.") {
                             username.text.clear()
                             password.text.clear()
                         }
@@ -63,15 +64,15 @@ class LoginActivity : AppCompatActivity() {
             mAuth?.signInWithEmailAndPassword(username.text.toString(), password.text.toString())?.addOnCompleteListener {
                 if (it.isSuccessful){
                     val user = mAuth?.currentUser
-                    UserModel.uid = user?.uid.toString()
-                    UserModel.email = user?.email.toString()
-                    UserModel.user = user
+                    User.uid = user?.uid.toString()
+                    User.email = user?.email.toString()
+                    User.user = user
                     progressDialog.dismiss()
-                    startActivity(Intent(this, HomeActivity::class.java))
+                    startActivity(Intent(this, HomeActvity::class.java))
                     finish()
                 } else {
                     progressDialog.dismiss()
-                    Utils.showAlertDialog(this,"Giriş İşlemi başarısız.") {
+                    Utils.showAlertDialog(this, "Giriş İşlemi başarısız.") {
                         username.text.clear()
                         password.text.clear()
                     }

@@ -2,7 +2,6 @@ package com.yazlab.smartmarket
 
 import android.app.AlertDialog
 import android.content.Context
-import android.widget.Toast
 
 object Utils {
 
@@ -16,5 +15,4 @@ object Utils {
         val alertDialog = builder.create()
         alertDialog.show()
     }
-
 }

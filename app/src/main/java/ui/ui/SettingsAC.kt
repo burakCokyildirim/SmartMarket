@@ -1,17 +1,16 @@
-package com.yazlab.smartmarket
+package ui.ui
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.functions.FirebaseFunctions
+import com.yazlab.smartmarket.R
+import com.yazlab.smartmarket.Utils
 
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.content_settings.*
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsAC : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +30,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (password.text.toString() != passwordAgain.text.toString()){
                     Utils.showAlertDialog(this, "Şifreler eşleşmiyor.") {}
                 } else {
-                    UserModel.user?.updatePassword(password.text.toString())?.addOnCompleteListener {
+                    User.user?.updatePassword(password.text.toString())?.addOnCompleteListener {
                         if (it.isSuccessful){
                             Utils.showAlertDialog(this, "Şifre değiştirme işlemi başarılı.") {
                                 finish()

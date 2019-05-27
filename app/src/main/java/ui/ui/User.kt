@@ -1,8 +1,8 @@
-package com.yazlab.smartmarket
+package ui.ui
 
 import com.google.firebase.auth.FirebaseUser
 
-object UserModel {
+object User {
     var uid: String = ""
     var email: String = ""
     var user: FirebaseUser? = null

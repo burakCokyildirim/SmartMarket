@@ -1,4 +1,4 @@
-package com.yazlab.smartmarket.ui
+package ui.ui
 
 import android.app.AlertDialog
 import android.content.Context

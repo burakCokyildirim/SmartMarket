@@ -1,4 +1,4 @@
-package com.yazlab.smartmarket.ui
+package ui.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -26,13 +26,11 @@ import com.github.kittinunf.fuel.httpGet
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.yazlab.smartmarket.R
-import com.yazlab.smartmarket.SettingsActivity
-import com.yazlab.smartmarket.UserModel
 import kotlinx.android.synthetic.main.content_home.*
 import kotlinx.android.synthetic.main.nav_header_home.*
 import org.json.JSONArray
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
+class HomeActvity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
     LocationListener,
     LocationDialogInterface, DialogInterface.OnCancelListener {
     override fun onCancel(p0: DialogInterface?) {
@@ -91,7 +89,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun getCampains() {
-        UserModel.campains.clear()
+        User.campains.clear()
         setCurrentLocation()
         val tempLocation = if (locationFlag) mLocation else dialogLocation
         if (storeName.text.isEmpty() && category.text.isEmpty()) {
@@ -118,7 +116,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     if (distance <= threshold.text.toString().toFloat()) {
                         val campainModel = Campain(category, name, distance)
-                        UserModel.campains.add(campainModel)
+                        User.campains.add(campainModel)
                     }
                 }
                 startActivity()
@@ -148,7 +146,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     if (distance <= threshold.text.toString().toFloat()) {
                         val campainModel = Campain(category, name, distance)
-                        UserModel.campains.add(campainModel)
+                        User.campains.add(campainModel)
                     }
                 }
                 startActivity()
@@ -178,7 +176,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     if (distance <= threshold.text.toString().toFloat()) {
                         val campainModel = Campain(category, name, distance)
-                        UserModel.campains.add(campainModel)
+                        User.campains.add(campainModel)
                     }
                 }
                 startActivity()
@@ -208,7 +206,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     if (distance <= threshold.text.toString().toFloat()) {
                         val campainModel = Campain(category, name, distance)
-                        UserModel.campains.add(campainModel)
+                        User.campains.add(campainModel)
                     }
                 }
                 startActivity()
@@ -230,7 +228,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun startActivity() {
-        if (UserModel.campains.isNotEmpty())
+        if (User.campains.isNotEmpty())
             startActivity(Intent(this, ListActivity::class.java))
         else
             "Sınırı aştı.".showMessage(this)
@@ -330,7 +328,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.home, menu)
-        textView.text = UserModel.email
+        textView.text = User.email
         return true
     }
 
@@ -353,7 +351,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_tools -> {
                 val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
                 drawerLayout.closeDrawer(GravityCompat.START)
-                startActivity(Intent(this, SettingsActivity::class.java))
+                startActivity(Intent(this, SettingsAC::class.java))
                 return true
             }
         }
