@@ -1,10 +1,11 @@
-package com.yazlab.smartmarket
+package com.yazlab.smartmarket.ui
 
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.location.Location
 import android.os.Bundle
+import com.yazlab.smartmarket.R
 import kotlinx.android.synthetic.main.location_dialog.*
 
 class LocationDialog(context: Context, cancelable:Boolean, cancelListener: DialogInterface.OnCancelListener,val locationDialogInterface: LocationDialogInterface):AlertDialog(context, cancelable, cancelListener) {

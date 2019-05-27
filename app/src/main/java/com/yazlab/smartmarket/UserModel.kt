@@ -1,6 +1,7 @@
 package com.yazlab.smartmarket
 
 import com.google.firebase.auth.FirebaseUser
+import com.yazlab.smartmarket.ui.Campain
 
 object UserModel {
     var uid: String = ""

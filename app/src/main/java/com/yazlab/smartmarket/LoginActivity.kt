@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import com.google.firebase.auth.FirebaseAuth
+import com.yazlab.smartmarket.ui.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -43,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
                         UserModel.email = user?.email.toString()
                         UserModel.user = user
                         progressDialog.dismiss()
-                        startActivity(Intent(this, HomeActivity::class.java))
+                        startActivity(Intent(this, MainActivity::class.java))
                         finish()
                     } else {
                         progressDialog.dismiss()
@@ -66,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
                     UserModel.email = user?.email.toString()
                     UserModel.user = user
                     progressDialog.dismiss()
-                    startActivity(Intent(this, HomeActivity::class.java))
+                    startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 } else {
                     progressDialog.dismiss()
