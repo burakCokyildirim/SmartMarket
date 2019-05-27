@@ -7,10 +7,13 @@ import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.activity_campain_list.*
 
 class CampainListActivity : AppCompatActivity() {
-    lateinit var adapter: CampainListAdapter
+    var adapter: CampainListAdapter?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_campain_list)
+
+        adapter = CampainListAdapter()
+
         list.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         list.adapter = adapter
     }

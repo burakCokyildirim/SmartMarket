@@ -1,7 +1,9 @@
 package com.yazlab.smartmarket
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Criteria
@@ -20,7 +22,9 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
+import android.widget.Toast
 import com.github.kittinunf.fuel.httpGet
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -29,15 +33,27 @@ import kotlinx.android.synthetic.main.nav_header_home.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, LocationListener {
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, LocationListener,
+    LocationDialogInterface, DialogInterface.OnCancelListener {
+    override fun onCancel(p0: DialogInterface?) {
+    }
+
+    override fun getLocation(location: Location) {
+        dialogLocation = location
+        locationFlag = false
+        getCampains()
+    }
 
     private lateinit var mMap: GoogleMap
     private lateinit var provider:String
     private var locationManager: LocationManager? = null
     private val PERMISSIONS_REQUEST_LOCATION = 100
     var mLocation:Location?=null
+    var dialogLocation:Location?=null
+    var locationFlag:Boolean = true
 
 
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -55,15 +71,27 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
 
-        permissionLocation()
+//        permissionLocation()
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as (LocationManager)
+        provider = locationManager!!.getBestProvider(Criteria(), false)
 
+        //Request location updates:
+        locationManager!!.requestLocationUpdates(provider, 400L, 1.0f, this)
         currentLocation.setOnClickListener {
+            locationFlag = true
             getCampains()
+        }
 
+        mapLocation.setOnClickListener {
+            val dialog = LocationDialog(this,true,this,this)
+            dialog.show()
         }
     }
 
     private fun getCampains() {
+        UserModel.campains.clear()
+        setCurrentLocation()
+        val tempLocation = if (locationFlag) mLocation else dialogLocation
         if (storeName.text.isEmpty() && category.text.isEmpty()){
             val url = "https://us-central1-yazlabadds.cloudfunctions.net/api/stores"
             url.httpGet().response { _, response, _ ->
@@ -81,17 +109,17 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .getJSONObject("location").getDouble("_latitude")
 
 
-                    val cLatitude = mLocation?.latitude
-                    val cLongitude = mLocation?.longitude
+                    val cLatitude = tempLocation?.latitude
+                    val cLongitude = tempLocation?.longitude
 
                     val distance = distance(latitude, longitude, cLatitude!!, cLongitude!!)
 
                     if ( distance <= threshold.text.toString().toFloat()) {
                         val campainModel = Campain(category, name, distance)
                         UserModel.campains.add(campainModel)
-                        startActivity(Intent(this, CampainListActivity::class.java))
                     }
                 }
+                startActivity()
             }
         }
         else if (storeName.text.isEmpty()) {
@@ -111,17 +139,17 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .getJSONObject("location").getDouble("_latitude")
 
 
-                    val cLatitude = mLocation?.latitude
-                    val cLongitude = mLocation?.longitude
+                    val cLatitude = tempLocation?.latitude
+                    val cLongitude = tempLocation?.longitude
 
                     val distance = distance(latitude, longitude, cLatitude!!, cLongitude!!)
 
                     if ( distance <= threshold.text.toString().toFloat()) {
                         val campainModel = Campain(category, name, distance)
                         UserModel.campains.add(campainModel)
-                        startActivity(Intent(this, CampainListActivity::class.java))
                     }
                 }
+               startActivity()
             }
         } else if (category.text.isEmpty()) {
             val url = "https://us-central1-yazlabadds.cloudfunctions.net/api/stores?name=" + storeName.text.toString()
@@ -141,17 +169,17 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .getJSONObject("location").getDouble("_latitude")
 
 
-                    val cLatitude = mLocation?.latitude
-                    val cLongitude = mLocation?.longitude
+                    val cLatitude = tempLocation?.latitude
+                    val cLongitude = tempLocation?.longitude
 
                     val distance = distance(latitude, longitude, cLatitude!!, cLongitude!!)
 
                     if ( distance <= threshold.text.toString().toFloat()) {
                         val campainModel = Campain(category, name, distance)
                         UserModel.campains.add(campainModel)
-                        startActivity(Intent(this, CampainListActivity::class.java))
                     }
                 }
+startActivity()
             }
         } else {
             val url = "https://us-central1-yazlabadds.cloudfunctions.net/api/stores?name=" + storeName.text
@@ -171,21 +199,40 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .getJSONObject("location").getDouble("_latitude")
 
 
-                    val cLatitude = mLocation?.latitude
-                    val cLongitude = mLocation?.longitude
+                    val cLatitude = tempLocation?.latitude
+                    val cLongitude = tempLocation?.longitude
 
                     val distance = distance(latitude, longitude, cLatitude!!, cLongitude!!)
 
                     if ( distance <= threshold.text.toString().toFloat()) {
                         val campainModel = Campain(category, name, distance)
                         UserModel.campains.add(campainModel)
-                        startActivity(Intent(this, CampainListActivity::class.java))
                     }
                 }
+               startActivity()
             }
         }
     }
 
+    private fun setCurrentLocation() {
+        if (locationFlag){
+            mLocation?.let {
+                textViewCurrentLocation.text = "Lat : ${it.latitude} - Long : ${it.longitude}"
+            }
+        } else {
+            dialogLocation?.let {
+                textViewCurrentLocation.text = "Lat : ${it.latitude} - Long : ${it.longitude}"
+            }
+        }
+
+    }
+
+    fun startActivity(){
+        if(UserModel.campains.isNotEmpty())
+            startActivity(Intent(this, CampainListActivity::class.java))
+        else
+            "Sınırı aştı.".showMessage(this)
+    }
     private fun distance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float{
         val loc1 = Location("")
         loc1.latitude = lat1
@@ -227,6 +274,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             locationManager = getSystemService(Context.LOCATION_SERVICE) as (LocationManager)
             provider = locationManager!!.getBestProvider(Criteria(), false)
+            locationManager!!.requestLocationUpdates(provider, 400L, 1.0f, this)
 
             return true
         }
@@ -316,9 +364,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0!!
     }
-
+    fun String.showMessage(context: Context){
+        Toast.makeText(context,this,Toast.LENGTH_SHORT).show()
+    }
     override fun onLocationChanged(location: Location?) {
+        "Konum Değişti".showMessage(this)
         mLocation = location
+        setCurrentLocation()
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
